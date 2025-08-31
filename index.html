@@ -48,9 +48,9 @@
                 </a>
             </div>
             
-            <div class="w-full max-w-4xl mb-12">
+            <div class="w-full max-w-6xl mb-12 px-4">
                 <h2 class="text-2xl font-bold mb-4 border-b-2 border-gray-700 pb-2">SeeMTA</h2>
-                <div class="grid md:grid-cols-2 gap-6 mt-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
                     <div class="bg-gray-800 bg-opacity-70 p-6 rounded-lg shadow-inner text-center flex flex-col">
                         <img src="https://raw.githubusercontent.com/laciisf/seenav/refs/heads/main/logo.png" alt="NAV Segédprogram Logó" class="w-24 h-24 mx-auto mb-4 rounded-md">
                         <h3 class="text-xl font-bold mb-2">NAV Segédprogram</h3>
@@ -67,125 +67,153 @@
                             Ugrás az oldalra
                         </a>
                     </div>
+                    <div class="bg-gray-800 bg-opacity-70 p-6 rounded-lg shadow-inner text-center flex flex-col">
+                        <img src="https://raw.githubusercontent.com/laciisf/seewanted/refs/heads/main/logo.png" alt="Körözés Idővonal Logó" class="w-24 h-24 mx-auto mb-4 rounded-md">
+                        <h3 class="text-xl font-bold mb-2">Körözés Idővonal</h3>
+                        <p class="text-gray-400 flex-grow mb-4">SeeMTA rendvédelmi frakciók számára hasznos log elemző program, ami a térképen jelzi, hogy az adott jármű hol volt és mikor, így dinamikus használattal könnyen lekövethető az adott autó és kiszámítható az útvonala.</p>
+                        <a href="#" onclick="openModal(); return false;" class="btn-hover-effect mt-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg shadow-md">
+                            Ugrás az oldalra
+                        </a>
+                    </div>
                 </div>
             </div>
 
-            <div class="w-full max-w-2xl mb-12">
+            <div class="w-full max-w-4xl mb-12">
                 <h2 class="text-2xl font-bold mb-4 border-b-2 border-gray-700 pb-2">Friss bejegyzések</h2>
-                <div class="bg-gray-800 bg-opacity-70 p-6 rounded-lg shadow-inner text-left">
-                    <p class="text-gray-400">Jelenleg nincsenek új bejegyzések. Nézz vissza később!</p>
-                </div>
+                <div id="posts-container" class="space-y-6">
+                    </div>
             </div>
+
         </main>
 
         <footer class="w-full py-6 mt-auto">
             <div class="flex flex-wrap items-start justify-center gap-x-8 md:gap-x-12 gap-y-4">
-                
                 <div class="text-gray-400 flex flex-col items-center w-20 text-center">
                     <i class="fab fa-discord fa-2x"></i>
                     <span class="mt-2 text-sm break-all">laciisf</span>
                 </div>
-                
                 <a href="https://www.youtube.com/@beatify_official" target="_blank" class="text-gray-400 hover:text-white transition-colors duration-300 flex flex-col items-center w-20 text-center">
                     <i class="fab fa-youtube fa-2x"></i>
                     <span class="mt-2 text-sm break-all">Beatify</span>
                 </a>
-                
                 <a href="https://www.twitch.tv/laciisf" target="_blank" class="text-gray-400 hover:text-white transition-colors duration-300 flex flex-col items-center w-20 text-center">
                     <i class="fab fa-twitch fa-2x"></i>
                     <span class="mt-2 text-sm break-all">laciisf</span>
                 </a>
-                
                 <a href="https://www.instagram.com/kola_192" target="_blank" class="text-gray-400 hover:text-white transition-colors duration-300 flex flex-col items-center w-20 text-center">
                     <i class="fab fa-instagram fa-2x"></i>
                     <span class="mt-2 text-sm break-all">kola_192</span>
                 </a>
-                
                 <a href="https://steamcommunity.com/id/2JM36" target="_blank" class="text-gray-400 hover:text-white transition-colors duration-300 flex flex-col items-center w-20 text-center">
                     <i class="fab fa-steam fa-2x"></i>
                     <span class="mt-2 text-sm break-all">laciisf</span>
                 </a>
-
                 <a href="mailto:lkorsos9@gmail.com" class="text-gray-400 hover:text-white transition-colors duration-300 flex flex-col items-center w-28 text-center">
                     <i class="fas fa-envelope fa-2x"></i>
                     <span class="mt-2 text-sm break-words">lkorsos9@gmail.com</span>
                 </a>
-
             </div>
         </footer>
     </div>
+    
+    <div id="custom-alert-modal" class="hidden fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-50 opacity-0 transition-opacity duration-300 ease-in-out">
+        <div class="bg-gray-800 rounded-lg shadow-xl p-8 w-full max-w-md text-center transform scale-95 transition-transform duration-300 ease-in-out">
+            <h3 class="text-xl font-bold text-red-400 mb-2">Hozzáférés Megtagadva</h3>
+            <p class="text-gray-300 mb-1">Ehhez nincs jogosultságod még.</p>
+            <p class="text-gray-400 text-sm mb-6"><strong>Indok:</strong> Az oldal fejlesztés alatt áll.</p>
+            <button onclick="closeModal()" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded-lg shadow-md transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-red-500">
+                Bezárás
+            </button>
+        </div>
+    </div>
 
     <script>
+        // --- Canvas háttér animáció ---
         const canvas = document.getElementById('background-canvas');
         const ctx = canvas.getContext('2d');
         let shapes = [];
+        function resizeCanvas(){canvas.width=window.innerWidth;canvas.height=window.innerHeight}function createShapes(){const t=25;shapes=[];for(let e=0;e<t;e++)shapes.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,size:Math.random()*50+25,sides:Math.floor(Math.random()*3)+3,angle:Math.random()*Math.PI*2,speed:Math.random()*.4+.1,rotationSpeed:(Math.random()-.5)*.01,color:`rgba(110, 128, 152, ${Math.random()*.2+.15})`})}function animate(){ctx.clearRect(0,0,canvas.width,canvas.height);shapes.forEach(t=>{t.y-=t.speed;t.angle+=t.rotationSpeed;t.y<-t.size&&(t.y=canvas.height+t.size,t.x=Math.random()*canvas.width);drawShape(t)});requestAnimationFrame(animate)}function drawShape(t){ctx.save();ctx.translate(t.x,t.y);ctx.rotate(t.angle);ctx.beginPath();for(let e=0;e<t.sides;e++){const o=(e/t.sides)*Math.PI*2,s=t.size*Math.cos(o),a=t.size*Math.sin(o);0===e?ctx.moveTo(s,a):ctx.lineTo(s,a)}ctx.closePath();ctx.strokeStyle=t.color;ctx.lineWidth=2;ctx.stroke();ctx.restore()}window.addEventListener("resize",()=>{resizeCanvas();createShapes()});resizeCanvas();createShapes();animate();
 
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
+        // --- Custom Modal vezérlés ---
+        const modal = document.getElementById('custom-alert-modal');
+        const modalContent = modal.querySelector('div');
+        function openModal(){modal.classList.remove("hidden");setTimeout(()=>{modal.classList.remove("opacity-0");modalContent.classList.remove("scale-95")},10)}function closeModal(){modal.classList.add("opacity-0");modalContent.classList.add("scale-95");setTimeout(()=>{modal.classList.add("hidden")},300)}modal.addEventListener("click",function(t){t.target===modal&&closeModal()});
 
-        function createShapes() {
-            const shapeCount = 25;
-            shapes = [];
-            for (let i = 0; i < shapeCount; i++) {
-                shapes.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    size: Math.random() * 50 + 25,
-                    sides: Math.floor(Math.random() * 3) + 3, // 3, 4, or 5 sides
-                    angle: Math.random() * Math.PI * 2,
-                    speed: Math.random() * 0.4 + 0.1,
-                    rotationSpeed: (Math.random() - 0.5) * 0.01,
-                    color: `rgba(110, 128, 152, ${Math.random() * 0.2 + 0.15})`
+        // ================================================================= //
+        // --- BEJEGYZÉSEK DINAMIKUS KEZELÉSE ---
+        // ================================================================= //
+
+        // IDE SZÚRD BE AZ ÚJ BEJEGYZÉSEKET
+        const posts = [
+            {
+                date: '2025. 08. 28.',
+                image: 'https://i.imgur.com/06UBdJJ.png',
+                title: 'SeeMTA Log Cleaner',
+                description: 'Ez a program lehetővé teszi, hogy a SeeMTA logfájlokból(SeeMTA -> logs) eltávolítsuk a Frakció üzeneteket és a Frakció felhívásokat egy gomb segítségével. Ez adminügyek során nagy segítség lehet a rendvédelem számára.',
+                link: 'https://laciisf.github.io/logcleaner/',
+                layout: 'top',
+                buttonText: 'Ugrás az oldalra'
+            },
+            {
+                date: '2025. 08. 31.',
+                image: 'https://i.imgur.com/7yWayss.png',
+                title: 'Új Projekt a Láthatáron',
+                description: 'teszt',
+                link: 'https://imgur.com/7yWayss',
+                layout: 'side',
+                buttonText: 'Kép megnyitása'
+            },
+        ];
+
+        function renderPosts() {
+            const container = document.getElementById('posts-container');
+            if (!container) return;
+            container.innerHTML = ''; 
+
+            if (posts.length === 0) {
+                container.innerHTML = `
+                    <div class="bg-gray-800 bg-opacity-70 p-6 rounded-lg shadow-inner text-left">
+                        <p class="text-gray-400">Jelenleg nincsenek új bejegyzések. Nézz vissza később!</p>
+                    </div>`;
+            } else {
+                posts.forEach(post => {
+                    const postElement = document.createElement('div');
+                    const buttonText = post.buttonText || 'Bővebben';
+                    const dateHTML = post.date ? `<p class="text-sm text-gray-500 mb-2">${post.date}</p>` : '';
+
+                    if (post.layout === 'top') {
+                        // Elrendezés: Kép FELÜL
+                        postElement.className = 'bg-gray-800 bg-opacity-70 p-4 rounded-lg shadow-inner flex flex-col gap-4';
+                        postElement.innerHTML = `
+                            <img src="${post.image}" alt="${post.title}" class="w-full h-auto rounded-md">
+                            <div class="flex flex-col text-left h-full">
+                                ${dateHTML}
+                                <h3 class="text-xl font-bold mb-2">${post.title}</h3>
+                                <p class="text-gray-400 flex-grow mb-4">${post.description}</p>
+                                <a href="${post.link}" target="_blank" class="btn-hover-effect mt-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-md self-start">
+                                    ${buttonText}
+                                </a>
+                            </div>`;
+                    } else {
+                        // Elrendezés: Kép OLDALT (alapértelmezett)
+                        postElement.className = 'bg-gray-800 bg-opacity-70 p-4 rounded-lg shadow-inner flex flex-col md:flex-row gap-4 items-start';
+                        postElement.innerHTML = `
+                            <img src="${post.image}" alt="${post.title}" class="w-full md:w-48 h-auto object-cover rounded-md aspect-video md:aspect-square">
+                            <div class="flex flex-col text-left h-full">
+                                ${dateHTML}
+                                <h3 class="text-xl font-bold mb-2">${post.title}</h3>
+                                <p class="text-gray-400 flex-grow mb-4">${post.description}</p>
+                                <a href="${post.link}" target="_blank" class="btn-hover-effect mt-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-md self-start">
+                                    ${buttonText}
+                                </a>
+                            </div>`;
+                    }
+                    container.appendChild(postElement);
                 });
             }
         }
 
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            shapes.forEach(shape => {
-                shape.y -= shape.speed;
-                shape.angle += shape.rotationSpeed;
-                if (shape.y < -shape.size) {
-                    shape.y = canvas.height + shape.size;
-                    shape.x = Math.random() * canvas.width;
-                }
-                drawShape(shape);
-            });
-            requestAnimationFrame(animate);
-        }
-
-        function drawShape(shape) {
-            ctx.save();
-            ctx.translate(shape.x, shape.y);
-            ctx.rotate(shape.angle);
-            ctx.beginPath();
-            for (let i = 0; i < shape.sides; i++) {
-                const angle = (i / shape.sides) * Math.PI * 2;
-                const x = shape.size * Math.cos(angle);
-                const y = shape.size * Math.sin(angle);
-                if (i === 0) {
-                    ctx.moveTo(x, y);
-                } else {
-                    ctx.lineTo(x, y);
-                }
-            }
-            ctx.closePath();
-            ctx.strokeStyle = shape.color;
-            ctx.lineWidth = 2;
-            ctx.stroke();
-            ctx.restore();
-        }
-
-        window.addEventListener('resize', () => {
-            resizeCanvas();
-            createShapes();
-        });
-
-        resizeCanvas();
-        createShapes();
-        animate();
+        document.addEventListener('DOMContentLoaded', renderPosts);
     </script>
 
 </body>
